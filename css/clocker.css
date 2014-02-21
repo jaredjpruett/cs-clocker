@@ -1,0 +1,50 @@
+body
+{
+	padding-top: 80px;
+	padding-bottom: 40px;
+}
+
+.form-signin
+{
+	max-width: 330px;
+	padding: 0px;
+	margin: auto;
+}
+
+.form-signin .form-control
+{
+	position: relative;
+	font-size: 16px;
+	height: auto;
+	padding: 10px;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+.form-signin .form-control:focus
+{
+	z-index: 2;
+}
+
+.btn
+{
+	margin-top: 20px;
+	margin-bottom: 1px;
+}
+
+.jumbotron
+{
+	.width: 60%;
+}
+
+.page-header
+{
+	margin-left: 15%;
+	margin-right: 15%;
+}
+
+.text
+{
+	text-align: center;
+}

@@ -1,0 +1,51 @@
+fieldset {
+	width: 1000px;
+	border: 0;
+}
+
+label {
+	text-align: left;
+	width: 30px;
+	float: left;
+}
+
+input.textbox {
+	width: 130px;
+}
+
+div.list {
+	width: 100px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+select#employees {
+	width: 100px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div.outer {
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div.insert {
+	border-style: 0px;
+}
+
+span.checkbox {
+	float: left;
+	width: 25px;
+}
+
+p.upper {
+	margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+p.lower {
+	margin-top: 0px;
+	margin-bottom: 10px;
+}

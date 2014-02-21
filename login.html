@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"> 
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" type="text/css" href="css/clocker.css">
+		<script src="js/jquery.js"></script>
+		<script src="js/login.js"></script>
+		<title>Tutor Login</title>
+	</head>
+    <body>
+        <div class="container">
+            <div class="page-header">
+				<h2 style="text-align:center">Employee Login<br>
+					<small>Texas State University Department of Computer Science</small>
+				</h2>
+			</div>
+            <form class="form-signin" id="login" method="post" action='php/control/login.php'>
+				<input type="text" name="type" value="employees" hidden readonly>
+                <input type="text" class="form-control" name="netid" placeholder="Net ID" autocomplete="off" autofocus>
+                <input type="password" class="form-control" name="password" placeholder="Password">
+				<button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+            </form>
+			<div style="margin: 0 auto; text-align: center">
+				<a class="switch" href="#" onclick="return switchLogin(2);">Administrative Control Panel</a>
+			</div>
+        </div>
+    </body>
+</html>
