@@ -36,6 +36,7 @@
 		{
 			$in = array();
 
+			# If last action of employee in database is 'clock_in', guess what
 			foreach($_SESSION['employees'] as $employee)
 			{
 				$result = $this->get_last_action($employee);
@@ -48,7 +49,7 @@
 		}
 
 		# Draw HTML select element with list of employees returned from LDAP query and saved in session variable
-		# Argument passed defines id of drawn element
+		# Argument passed defines id of drawn element; defaults to 'list'
 		public function draw_employees_list($id = 'list')
 		{
 			$select = "<select id='$id'>";
@@ -71,12 +72,13 @@
 
 			$display = "
 				<form type='submit' action='../../control/logout.php'>
-				<fieldset>
+					<fieldset>
 				";
 
 			# Formulate the editor; each iteration is a new period
 			# $num is used to assign ids to elements
 			# ids are used by Javascript to formulate an AJAX call
+			# Submitted values are, of course, validated server-side
 			for($num = 0; $row = mysqli_fetch_array($query); $num++)
 			{
 				$aid		= $row['aid'];
@@ -133,6 +135,14 @@
 		############################################################################################
 		## Methods for asserting validity of posted data										  ##
 		############################################################################################
+		## assert_employee receives string $netid containing netid of employee being edited
+		## assert_latest receives datetime strings array $times, datetime string $last
+		##	Note that $last is a singular datetime string
+		## assert_timestamp receives datetime strings array $times
+		## assert_datetime receives datetime strings array $times
+		## assert_positive receives datetime strings array $times
+		## assert_periods receives datetime strings arrays $times1 and $times2
+		##	Note that both arguments may or may not be the same object
 
 		# Assert posted NetID is on the list of employees
 		public function assert_employee($netid)
@@ -142,6 +152,7 @@
 
 		# Assert a given time $last is the latest of any times supplied to $times array
 		# $last may or may not be in $times list, should probably change that
+		# $times is array of datetime strings; $last is a datetime string
 		public function assert_latest($times, $last)
 		{
 			if($times)
@@ -153,8 +164,11 @@
 		}
 
 		# Assert posted datetime strings are valid and conform to our established standard
+		# $times is array of datetime strings
 		public function assert_timestamp($times)
 		{
+			# Timestamp string must be of format "DDDD-DD-DD DD:DD:DD" where D is a decimal value
+			# Valid datetimes are asserted seperately
 			$regex = "/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/";
 
 			foreach($times as $time)
@@ -169,17 +183,23 @@
 		{
 			foreach($times as $time)
 			{
+				# Ugly manual string extraction
 				$hour = substr($time, 11, 2);
 				$minute = substr($time, 14, 2);
 				$second = substr($time, 17, 2);
 
+				# Assert 0 <= hours < 24, 0 <= minutes < 60, 0 <= seconds < 60
+				# Anything else is obviously not an actual time
 				if($hour < 0 || $hour > 24 || $minute < 0 || $minute > 59 || $second < 0 || $second > 59)
 					return false;
 
+				# More ugly manual string extraction
 				$month = substr($time, 5, 2);
 				$day = substr($time, 8, 2);
 				$year = substr($time, 0, 4);
 
+				# Assert that month/day/year combination is a possible date
+				# Ex: February 29, 2014 is not a possible date
 				if(checkdate($month, $day, $year) == false)
 					return false;
 			}
@@ -190,6 +210,8 @@
 		# Assert each posted period (one clock in, one clock out) results in a positive time
 		public function assert_positive($times)
 		{
+			# If size of times array is uneven, last action is clock in
+			# Should not and cannot be compared with a clock out; validate elsewhere
 			$periods = sizeof($times) - sizeof($times) % 2;
 
 			for($i = 0; $i < $periods; $i += 2)
@@ -206,6 +228,7 @@
 			$size1 = sizeof($times1) - sizeof($times1) % 2;
 			$size2 = sizeof($times2) - sizeof($times2) % 2;
 
+			# Check every period against every other period
 			for($i = 0; $i < $size1; $i += 2)
 				for($j = 0; $j < $size2; $j += 2)
 					if($this->check_overlap($times1[$i], $times1[$i + 1], $times2[$j], $times2[$j + 1]))
@@ -222,17 +245,20 @@
 		public function check_overlap($ein, $eout, $in, $out)
 		{
 			# Convert received timestamp strings into DateTime objects
+			# ein/eout => established in/out; a period already known to not overlap previously checked periods
 			$ein = new DateTime($ein);
 			$eout = new DateTime($eout);
 			$in = new DateTime($in);
 			$out = new DateTime($out);
 
+			# If in happened before ein, so must have out; else overlap
 			if($in < $ein)
 				if($out < $ein)
 					return false;
 				else
 					return true;
 
+			# If in happened after ein, it must have happened after eout; else overlap
 			if($in > $ein)
 				if($in > $eout)
 					return false;

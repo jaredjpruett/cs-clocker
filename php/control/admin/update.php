@@ -20,6 +20,8 @@
 	############################################################################
 	## Set variables and error codes										  ##
 	############################################################################
+	# Probably want to stop passing actions, not necessary
+	# Want to consolidate $adds/$addition and what's being passed from AJAX
 
 	$db = new Clock_Admin();
 
@@ -59,22 +61,38 @@
 	$db->assert_positive($time) or die($error3);
 	# Ensure no periods overlap
 	$db->assert_periods($time, $time) or die($error4);
-	# Validate datetimes
-	if($time) $db->assert_timestamp($time) or die($error2);
-	if($time) $db->assert_datetime($time) or die($error2);
-	if($adds) $db->assert_timestamp($addition) or die($error2);
-	if($adds) $db->assert_datetime($addition) or die($error2);
-	# If adding new action, ensure its action time is the latest action time
-	if($adds == 1) $db->assert_latest($time, $addition[0]) or die($error5);
-	# If employee is clocked in, ensure that it's the latest action
-	if($in) $db->assert_latest($time, $time[$size - 1]) or die($error5);
-	# Ensure newly added period is not negative
-	if($adds == 2) $db->assert_positive($addition) or die($error3);
-	# If adding new period, ensure it does not overlap with any other period
-	if($adds == 2) $db->assert_periods($time, $addition) or die($error4);
-	# If adding new period and user is clocked in, ensure new period's time is less than current clock in action time
-	if($adds == 2 && $in) $db->assert_latest($addition, $time[$size - 1]) or die($error3);
 
+	# If employee is clocked in, ensure that it's the latest action
+	if($in)
+		$db->assert_latest($time, $time[$size - 1]) or die($error5);
+
+	# Validate datetimes
+	if($time)
+	{
+		$db->assert_timestamp($time) or die($error2);
+		$db->assert_datetime($time) or die($error2);
+	}
+
+	if($adds)
+	{
+		$db->assert_timestamp($addition) or die($error2);
+		$db->assert_datetime($addition) or die($error2);
+	}
+
+	# If adding new action, ensure its action time is the latest action time
+	if($adds == 1)
+		$db->assert_latest($time, $addition[0]) or die($error5);
+
+	if($adds == 2)
+	{
+		# Ensure newly added period is not negative
+		$db->assert_positive($addition) or die($error3);
+		# If adding new period, ensure it does not overlap with any other period
+		$db->assert_periods($time, $addition) or die($error4);
+		# If adding new period and user is clocked in, ensure new period's time is less than current clock in action time
+		if($in)
+			$db->assert_latest($addition, $time[$size - 1]) or die($error3);
+	}
 	############################################################################
 
 
