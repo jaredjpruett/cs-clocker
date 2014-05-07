@@ -1,5 +1,5 @@
 <?php
-	# You'll notice that the software pattern isn't really MVC.
+	# You'll notice that the software pattern isn't really MVC
 	# I just used those names to give myself some structural idea
 	class Clock extends mysqli
 	{
@@ -9,8 +9,7 @@
 
 		public function __construct()
 		{
-			//parent::__construct($host, $user, $pass, $db);
-			parent::__construct($_SESSION['host'], $_SESSION['netid'], $_SESSION['pass'], $_SESSION['database']);
+			parent::__construct($_SESSION['host'], $_SESSION['netid'], $_SESSION['pass'], $_SESSION['database'], $_SESSION['port']);
 
 			if(mysqli_connect_error()) die ("Connection error: (" . mysqli_connect_errno() . ") " . mysqli_connect_error());
 

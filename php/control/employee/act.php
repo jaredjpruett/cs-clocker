@@ -24,6 +24,7 @@
 	$db = new Clock_Employee();
 
 	$user = $_SESSION['sess_username'];
+	# clock_action function toggles clock status
 	$action = $db->clock_action($user) == 'clock_in' ? 'in' : 'out';
 	$time = $db->get_time_worked($user);
 	$time = $db->format_time_worked($time);

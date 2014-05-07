@@ -10,6 +10,7 @@
 
 	session_start();
 
+	# Session type must be administrator, current container must be the edit page
 	assert_session($type = 'administrators');
 	assert_container($container = $admin_url['editor']);
 
@@ -21,6 +22,7 @@
 	## Remove specified entries by aid										  ##
 	############################################################################
 
+	# Ensure that something was actually posted, otherwise this script should never be invoked
 	isset($_POST['employee']) or die('stahp');
 
 	$db = new Clock_Admin();

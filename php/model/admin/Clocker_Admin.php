@@ -36,11 +36,11 @@
 		{
 			$in = array();
 
-			# If last action of employee in database is 'clock_in', guess what
 			foreach($_SESSION['employees'] as $employee)
 			{
 				$result = $this->get_last_action($employee);
 
+				# If last action of employee in database is 'clock_in', guess what
 				if($result['action'] == 'clock_in')
 					$in[] = $employee;
 			}
@@ -168,7 +168,7 @@
 		public function assert_timestamp($times)
 		{
 			# Timestamp string must be of format "DDDD-DD-DD DD:DD:DD" where D is a decimal value
-			# Valid datetimes are asserted seperately
+			# Valid datetimes are asserted separately
 			$regex = "/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/";
 
 			foreach($times as $time)

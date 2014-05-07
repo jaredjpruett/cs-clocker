@@ -5,6 +5,7 @@
 	# Intending to change to an ini read
 	$base = "/~jaredp/Clocker";
 
+	# Move path arrays into config.php
 	$url = array (
 		"Clock" => "$base/php/model/Clocker.php",
 		"LDAP" => "$base/php/model/LDAP.php",

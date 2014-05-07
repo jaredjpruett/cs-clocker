@@ -3,20 +3,16 @@
 	## Initialize script and assert session validity						  ##
 	############################################################################
 
-	ini_set('display_errors', 'On');
+	ini_set('display_errors', 'On'); #debug
 
-	# credentials.php is a PHP file hosted outside of the public root
-	# It contains variables host, netid, pass, database
-	include_once '../../../../credentials.php';
-	# Contains session asserts and paths to our scripts
+	# config.php contains the variables host, netid, pass, database
+	include_once '../config.php';
+	# Contains session asserts and paths to our source files
 	include_once '../session.php';
 	include_once '../model/admin/LDAP_Admin.php';
 	include_once '../model/employee/LDAP_Employee.php';
-
-	# Also this here login script is clearly kind of repulsive at the moment
-	############################################################################
 	
-
+	############################################################################
 
 	############################################################################
 	## Validate posted data, set variables used in generating session		  ##
@@ -29,6 +25,10 @@
 	$password = $_POST['password'];
 	$type = $_POST['type'];
 
+	# Our next location will be the main menu for either admin or regular user,
+	# depending on the type of login executed.
+	# Similarly, the LDAP object type used is set.
+	# Boy howdy how clunky is that
 	if($type == 'administrators')
 	{
 		$location = $admin_url['menu'];
@@ -49,32 +49,39 @@
 
 	############################################################################
 	## Generate session, set session variables								  ##
-	## 
-	## Sessios user id and username provide the session identity and are used
-	##	to assert sessions existence.
-	## Database credentials are provided by credentials.php, hosted outside
-	##	of the public root.
+	##------------------------------------------------------------------------##
+	## Session's user id and username constitute the session identity and are ##
+	##  used to assert sessions existence.									  ##
+	## Database credentials are provided by credentials.php, hosted outside	  ##
+	##	of the public root for some raisin.									  ##
 	############################################################################
 
+	# Begin session and generate an id
 	session_start();
 	session_regenerate_id();
 
+	# Set session variables to track login name and session id.
+	# I really need to consolidate this manner of variable.
 	$_SESSION['sess_user_id'] = session_id();
 	$_SESSION['sess_username'] = $username;
 
 	# Credentials for the database
 	$_SESSION['host'] = $host;
+	$_SESSION['port'] = $port;
 	$_SESSION['netid'] = $netid;
 	$_SESSION['pass'] = $pass;
 	$_SESSION['database'] = $database;
 
+	# Gets IPv4 address of connecting client
 	$_SESSION['address'] = $ldap->get_client_address();
 	# Session variable 'container' is used by certain scripts to assert that they're being invoked propery
+	# Set it to denote that our most recent 'container' was the login page
 	$_SESSION['container'] = $_SERVER['PHP_SELF'];
 	# Session variable 'type' denotes the type of session the user is logged into; administrator or employee
-	# Used to further security and robustness of application
+	# Used to further security and robustness of application or something
 	$_SESSION['type'] = $type;
 
+	# Create session variables to keep track of our list of employees and administrators as grabbed from LDAP
 	$_SESSION['employees'] = $ldap->employees;
 	$_SESSION['administrators'] = $ldap->administrators;
 

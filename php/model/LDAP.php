@@ -9,7 +9,7 @@
 
 		public function __construct($username, $password)
 		{
-			$this->conn = ldap_connect("ads1.matrix.txstate.edu") or die("Could not connect to LDAP server.");
+			$this->conn = ldap_connect("matrix.txstate.edu") or die("Could not connect to LDAP server.");
 			$this->bind = @ldap_bind($this->conn, "txstate\\$username", $password) or die("Incorrect login information.");
 
 			$this->employees = $this->create_group_array("CS\$Labstaff", "Lab Assistant Groups");
@@ -40,6 +40,7 @@
 			return $ipaddress; 
 		}
 
+		# Create an array of strings consisting of the members of a group $cn
 		public function create_group_array($cn, $ou)
 		{
 			$tree = "OU=$ou, OU=SecurityGroups, OU=CS, DC=matrix, DC=txstate, DC=edu";

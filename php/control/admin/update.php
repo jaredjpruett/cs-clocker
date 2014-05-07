@@ -10,6 +10,7 @@
 
 	session_start();
 
+	# Session type must be administrator, current container must be the edit page
 	assert_session($type = 'administrators');
 	assert_container($container = $admin_url['editor']);
 
@@ -36,6 +37,7 @@
 
 	$adds		= sizeof($addition);
 	$size		= sizeof($time);
+	# If the employee being edited has an odd number of actions, they are currently clocked in
 	$in			= $size % 2 == 1 ? true : false;
 
 	$error1		= "Fatal error: data posted for non-employee. Update aborted.";
@@ -62,9 +64,8 @@
 	# Ensure no periods overlap
 	$db->assert_periods($time, $time) or die($error4);
 
-	# If employee is clocked in, ensure that it's the latest action
-	if($in)
-		$db->assert_latest($time, $time[$size - 1]) or die($error5);
+	# If employee is clocked in, ensure that said action is the latest action
+	if($in) $db->assert_latest($time, $time[$size - 1]) or die($error5);
 
 	# Validate datetimes
 	if($time)
@@ -72,7 +73,6 @@
 		$db->assert_timestamp($time) or die($error2);
 		$db->assert_datetime($time) or die($error2);
 	}
-
 	if($adds)
 	{
 		$db->assert_timestamp($addition) or die($error2);
@@ -80,8 +80,7 @@
 	}
 
 	# If adding new action, ensure its action time is the latest action time
-	if($adds == 1)
-		$db->assert_latest($time, $addition[0]) or die($error5);
+	if($adds == 1) $db->assert_latest($time, $addition[0]) or die($error5);
 
 	if($adds == 2)
 	{
@@ -90,8 +89,7 @@
 		# If adding new period, ensure it does not overlap with any other period
 		$db->assert_periods($time, $addition) or die($error4);
 		# If adding new period and user is clocked in, ensure new period's time is less than current clock in action time
-		if($in)
-			$db->assert_latest($addition, $time[$size - 1]) or die($error3);
+		if($in) $db->assert_latest($addition, $time[$size - 1]) or die($error3);
 	}
 	############################################################################
 
@@ -102,6 +100,7 @@
 	############################################################################
 
 	# Update existing entries
+	# Could be made more efficient
 	for($i = 0; $i < $size; $i++)
 	{
 		$current = mysqli_fetch_array($db->query("SELECT * FROM $db->table WHERE aid = " . $aid[$i]));
@@ -110,9 +109,10 @@
 			$db->update_entry($aid[$i], $name, $time[$i], $action[$i]);
 	}
 
+	# If single action is being added, it is the opposite of employee's previous action.
 	$ac = $in ? 'clock_out' : 'clock_in';	
 
-	# Insert new entries
+	# Insert any new entries
 	if($adds == 2)
 	{
 		$db->add_entry($name, $addition[0], 'clock_in');
