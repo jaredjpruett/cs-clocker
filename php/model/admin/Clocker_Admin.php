@@ -28,6 +28,10 @@
 		}
 
 		############################################################################################
+
+
+
+		############################################################################################
 		## Methods for accessing the database and drawing the web interface						  ##
 		############################################################################################
 
@@ -133,16 +137,21 @@
 		}
 
 		############################################################################################
-		## Methods for asserting validity of posted data										  ##
+
+
+
 		############################################################################################
-		## assert_employee receives string $netid containing netid of employee being edited
-		## assert_latest receives datetime strings array $times, datetime string $last
-		##	Note that $last is a singular datetime string
-		## assert_timestamp receives datetime strings array $times
-		## assert_datetime receives datetime strings array $times
-		## assert_positive receives datetime strings array $times
-		## assert_periods receives datetime strings arrays $times1 and $times2
-		##	Note that both arguments may or may not be the same object
+		## Methods for asserting validity of posted data										  ##
+		##----------------------------------------------------------------------------------------##
+		## assert_employee receives string $netid containing netid of employee being edited		  ##
+		## assert_latest receives datetime strings array $times, datetime string $last			  ##
+		##	Note: $last is a singular datetime string											  ##
+		## assert_timestamp receives datetime strings array $times								  ##
+		## assert_datetime receives datetime strings array $times								  ##
+		## assert_positive receives datetime strings array $times								  ##
+		## assert_periods receives datetime strings arrays $times1 and $times2					  ##
+		##	Note: both arguments may or may not be the same object								  ##
+		############################################################################################
 
 		# Assert posted NetID is on the list of employees
 		public function assert_employee($netid)
@@ -238,6 +247,10 @@
 		}
 
 		############################################################################################
+
+
+
+		############################################################################################
 		## Auxiliary functions																	  ##
 		############################################################################################
 
@@ -267,5 +280,7 @@
 
 			return false;
 		}
+
+		############################################################################################
 	}
 ?>

@@ -1,11 +1,12 @@
 <?php
 	ini_set('display_errors', 'On');
 
+	# to do: change to an ini read
+	# to do: move path arrays into config.php
+
 	# Using string literal instead of PHP_SELF because I'm guessing that's somehow safer
-	# Intending to change to an ini read
 	$base = "/~jaredp/Clocker";
 
-	# Move path arrays into config.php
 	$url = array (
 		"Clock" => "$base/php/model/Clocker.php",
 		"LDAP" => "$base/php/model/LDAP.php",
@@ -40,7 +41,7 @@
 	);
 
 	# Receives session type [admin or employee] as argument from invoking script
-	# Session type denotes 
+	# Session type is used to enforce access control
 	function assert_session($type)
 	{
 		# Assert that session user id is set

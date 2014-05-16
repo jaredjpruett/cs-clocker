@@ -1,8 +1,8 @@
 <?php
 	# Gets, formats, displays information about employee:
-	# Clock status
-	# Time worked this pay period
-	# Timestamps of clock ins and clock outs
+	#  Clock status
+	#  Time worked this pay period
+	#  Timestamps of clock ins and clock outs
 
 	############################################################################
 	## Initialize script and assert session validity						  ##
@@ -28,8 +28,10 @@
 	$db = new Clock_Employee();
 	$netid = $_SESSION['sess_username'];
 
+	# Formulate display
 	$time = $db->format_time_worked($db->get_time_worked($netid));
-	$times = $db->draw_table(); # Draws user's clocked periods I think
+	# Draws user's clocked periods.. I think
+	$times = $db->draw_table(); 
 	$last = $db->get_last_action($netid);
 	$clocked = $last['action'] == 'clock_in' ? 'in' : 'out';
 
@@ -45,6 +47,7 @@
 		";
 
 	############################################################################
+
 
 
 	############################################################################
