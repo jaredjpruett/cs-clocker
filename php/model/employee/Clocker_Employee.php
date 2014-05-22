@@ -11,11 +11,11 @@
 		}
 
 		# Update user's clock status
-		# Independent of input data; queries database to ascertain user's last action, inserts inverse
+		# Independent of input data; queries database to ascertain user's last action, inserts inverse (clock_in -> clock_out, clock_out -> clock_in)
 		public function clock_action($username) # Remove argument, looks like we're not using it anymore
 		{
-			$name = strtolower(preg_replace('/[^a-z0-9-]+/i', '_', $_SESSION['sess_username']));
-			$last = $this->get_last_action($name);
+			$name   = strtolower(preg_replace('/[^a-z0-9-]+/i', '_', $_SESSION['sess_username']));
+			$last   = $this->get_last_action($name);
 			$action = $last['action'] == 'clock_in' ? 'clock_out' : 'clock_in';
 
 			$this->query("INSERT INTO $this->table (name, time, action, ip) VALUES ('$name', NOW(), '$action', '$this->address')");
@@ -26,9 +26,9 @@
 		# Formulates 'table' consisting of in and out times for each period the user has clocked
 		public function draw_table() # Give less terrible name
 		{
-			$query = $this->query("SELECT time FROM $this->table WHERE name = '$this->username' ORDER BY aid, time");
-			$data = Array();
-			$table = NULL;
+			$query  = $this->query("SELECT time FROM $this->table WHERE name = '$this->username' ORDER BY aid, time");
+			$data   = Array();
+			$table  = NULL;
 
 			while($result = mysqli_fetch_array($query))
 				$data[] = $result['time'];

@@ -10,6 +10,8 @@
 
 		############################################################################################
 		## Methods for updating the database													  ##
+		##----------------------------------------------------------------------------------------##
+        ## Input data is scrubbed and validated before methods are invoked                        ##
 		############################################################################################
 
 		public function update_entry($id, $name, $time, $action)
@@ -176,7 +178,7 @@
 		# $times is array of datetime strings
 		public function assert_timestamp($times)
 		{
-			# Timestamp string must be of format "DDDD-DD-DD DD:DD:DD" where D is a decimal value
+			# Timestamp string must be of format "iiii-ii-ii ii:ii:ii" where 'i' is a decimal value
 			# Valid datetimes are asserted separately
 			$regex = "/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/";
 
@@ -193,7 +195,7 @@
 			foreach($times as $time)
 			{
 				# Ugly manual string extraction
-				$hour = substr($time, 11, 2);
+				$hour   = substr($time, 11, 2);
 				$minute = substr($time, 14, 2);
 				$second = substr($time, 17, 2);
 
@@ -203,9 +205,9 @@
 					return false;
 
 				# More ugly manual string extraction
-				$month = substr($time, 5, 2);
-				$day = substr($time, 8, 2);
-				$year = substr($time, 0, 4);
+				$month  = substr($time, 5, 2);
+				$day    = substr($time, 8, 2);
+				$year   = substr($time, 0, 4);
 
 				# Assert that month/day/year combination is a possible date
 				# Ex: February 29, 2014 is not a possible date
@@ -259,10 +261,10 @@
 		{
 			# Convert received timestamp strings into DateTime objects
 			# ein/eout => established in/out; a period already known to not overlap previously checked periods
-			$ein = new DateTime($ein);
-			$eout = new DateTime($eout);
-			$in = new DateTime($in);
-			$out = new DateTime($out);
+			$ein    = new DateTime($ein);
+			$eout   = new DateTime($eout);
+			$in     = new DateTime($in);
+			$out    = new DateTime($out);
 
 			# If in happened before ein, so must have out; else overlap
 			if($in < $ein)

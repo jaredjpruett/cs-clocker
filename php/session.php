@@ -1,7 +1,6 @@
 <?php
 	ini_set('display_errors', 'On');
 
-	# to do: change to an ini read
 	# to do: move path arrays into config.php
 
 	# Using string literal instead of PHP_SELF because I'm guessing that's somehow safer
@@ -13,7 +12,7 @@
 
 		"login" => "$base/control/login.php",
 		"logout" => "$base/control/logout.php",
-		"session" => "$base/session.php",	
+		"session" => "$base/session.php",
 	);
 
 	$admin_url = array (
