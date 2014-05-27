@@ -10,7 +10,7 @@
 		public function __construct($username, $password)
 		{
 			$this->conn = ldap_connect("matrix.txstate.edu") or die("Could not connect to LDAP server.");
-			$this->bind = @ldap_bind($this->conn, "txstate\\$username", $password) or die("Incorrect login information.");
+			$this->bind = ldap_bind($this->conn, "txstate\\$username", $password) or die("Incorrect login information.");
 
 			$this->employees = $this->create_group_array("CS\$Labstaff", "Lab Assistant Groups");
 		}

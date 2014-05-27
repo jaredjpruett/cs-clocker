@@ -1,10 +1,11 @@
 <?php
 	ini_set('display_errors', 'On');
 
-	# to do: move path arrays into config.php
+	# to do: move path arrays into paths.php
+    #        rename config.php to credentials.php
 
 	# Using string literal instead of PHP_SELF because I'm guessing that's somehow safer
-	$base = "/~jaredp/Clocker";
+	$base = "/~jaredp/Clocker/";
 
 	$url = array (
 		"Clock" => "$base/php/model/Clocker.php",

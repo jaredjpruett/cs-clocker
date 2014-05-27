@@ -3,7 +3,7 @@
 	## Initialize script and assert session validity						  ##
 	############################################################################
 
-	ini_set('display_errors', 'On'); #debug
+	#ini_set('display_errors', 'On'); #debug
 
 	# config.php contains the variables host, netid, pass, database
 	include_once '../config.php';
@@ -11,7 +11,7 @@
 	include_once '../session.php';
 	include_once '../model/admin/LDAP_Admin.php';
 	include_once '../model/employee/LDAP_Employee.php';
-	
+
 	############################################################################
 
 	############################################################################
@@ -29,13 +29,10 @@
 	# depending on the type of login executed.
 	# Similarly, the LDAP object type used is set.
 	# Boy howdy how clunky is that
-	if($type == 'administrators')
-	{
+	if($type == 'administrators') {
 		$location = $admin_url['menu'];
 		$ldap = new LDAP_Admin($username, $password);
-	}
-	else
-	{
+	} else {
 		$location = $employee_url['menu'];
 		$ldap = new LDAP_Employee($username, $password);
 	}
