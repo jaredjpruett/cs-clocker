@@ -14,7 +14,7 @@
 
 			$this->employees = $this->create_group_array("CS\$Labstaff", "Lab Assistant Groups");
 		}
-		
+
 		public function disconnect()
 		{
 			ldap_unbind($this->conn);
@@ -37,7 +37,7 @@
 			else
 				$ipaddress = 'UNKNOWN';
 
-			return $ipaddress; 
+			return $ipaddress;
 		}
 
 		# Create an array of strings consisting of the members of a group $cn
@@ -47,7 +47,7 @@
 			$filter = "CN=$cn";
 			$attribute = array('member');
 
-			$result = ldap_search($this->conn, $tree, $filter, $attribute) or die("Error: " . ldap_err2str(ldap_errno($con)));
+			$result = ldap_search($this->conn, $tree, $filter, $attribute) or die("Error: " . ldap_err2str(ldap_errno($conn)));
 			$entries = ldap_get_entries($this->conn, $result) or die("Error: was unable to parse results.");
 
 			$members = array();
