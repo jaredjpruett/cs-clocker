@@ -10,8 +10,8 @@ $(window).bind('beforeunload', function() {
 });
 
 /***************************************************************************************************
-* Functions for posting data to be added, updated, or removed.									   *
-***************************************************************************************************/
+ * Functions for posting data to be added, updated, or removed.									   *
+ ***************************************************************************************************/
 
 //
 function commit_changes(rows, add)
@@ -43,8 +43,7 @@ function commit_changes(rows, add)
 		type: "POST",
 		url: update,
 		data: { 'aid' : aid, 'name' : employee, 'time' : time, 'action' : action, 'adds' : adds, 'addition' : addition }
-	})
-	.done(function(result) {
+	}).done(function(result) {
 		$("#content").html(result);
 	});
 }
@@ -53,7 +52,7 @@ function remove_selected(rows)
 {
 	if(confirm("Are you sure?") == false)
 		return;
-	
+
 	disable(1);
 
 	var anchors = document.getElementsByTagName('a');
@@ -75,8 +74,7 @@ function remove_selected(rows)
 		type: "POST",
 		url: remove,
 		data: { 'num' : rows, 'data' : data, 'employee' : employee }
-	})
-	.done(function(result) {
+	}).done(function(result) {
 		$("#content").html(result);
 	});
 }

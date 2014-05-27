@@ -11,8 +11,7 @@ function clock()
 	$.ajax({
 		type: "POST",
 		url: act
-	})
-	.done(function(result) {
+	}).done(function(result) {
 		$("#outer").html(result);
 	});
 }
@@ -22,8 +21,7 @@ function info()
 	$.ajax({
 		type: "POST",
 		url: inf
-	})
-	.done(function(result) {
+	}).done(function(result) {
 		$("#outer").html(result);
 	});
 }
