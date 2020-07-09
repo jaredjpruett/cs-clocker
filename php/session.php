@@ -49,7 +49,7 @@
 		{
 			session_destroy();
 
-			header("location: ../../../login.html");
+			header("location: ../../../index.html");
 		}
 
 		# Assert that user invoking script is a member of the appropriate group (employee or admin)

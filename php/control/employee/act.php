@@ -39,7 +39,7 @@
 
 	$result = "<p class='text'>Employee '$user' has been clocked <b>$action</b>.</p>
 		<p class='text'>$time</p>
-		<script>function gotologin() { window.location.replace('../../../login.html'); }</script>
+		<script>function gotologin() { window.location.replace('../../../index.html'); }</script>
 		<form class='form-signin' method='post' action='../../control/logout.php'>
 		<button class='btn btn-lg btn-primary btn-block' type='button' onclick='dash()'>Return to Dash</button>
 		<button class='btn btn-lg btn-primary btn-block' type='submit'>Log Out</button>";
